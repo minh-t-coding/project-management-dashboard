@@ -1,0 +1,97 @@
+<section class="page teams-page">
+  <div class="teams-header">
+    <div>
+      <h2>Teams</h2>
+      <p class="muted">Explore active squads across your organization</p>
+    </div>
+    <button class="action-button" *ngIf="isAdmin$ | async" (click)="openModal()">New Team</button>
+  </div>
+
+  <div class="teams-grid">
+    <article class="team-card" *ngFor="let team of teams$ | async" (click)="viewTeam(team)">
+      <div class="team-card-header">
+        <div>
+          <h3>{{ team.name }}</h3>
+          <span class="muted"># of Projects: {{ projectCounts.get(team.id) ?? 0 }}</span>
+        </div>
+        <div class="card-actions" *ngIf="isAdmin$ | async">
+          <button class="ghost-link" (click)="startEdit(team); $event.stopPropagation()">Edit</button>
+          <button class="ghost-link danger" (click)="deleteTeam(team); $event.stopPropagation()">Delete</button>
+        </div>
+      </div>
+      <p class="muted">{{ team.description }}</p>
+      <div class="team-members">
+        <p>Members</p>
+        <div class="chips">
+          <span class="chip" *ngFor="let member of team.teammates">{{ getMemberName(member) }}</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="modal-backdrop" *ngIf="modalOpen">
+  <div class="modal">
+    <button class="modal-close" (click)="closeModal()">✕</button>
+    <h3>Create a New Team</h3>
+    <form [formGroup]="teamForm" (ngSubmit)="createTeam()">
+      <div class="form-control">
+        <label>Team Name</label>
+        <input formControlName="name" placeholder="Team name" />
+      </div>
+      <div class="form-control">
+        <label>Description</label>
+        <textarea formControlName="description" placeholder="What is this team focused on?"></textarea>
+      </div>
+      <div class="form-control">
+        <label>Select Members</label>
+        <select formControlName="memberId" (change)="handleMemberSelect($any($event.target).value)">
+          <option value="">Pick a teammate</option>
+          <option *ngFor="let user of users$ | async" [value]="user.id">
+            {{ user.profile.firstName }} {{ user.profile.lastName }}
+          </option>
+        </select>
+      </div>
+      <div class="chips">
+        <span class="chip" *ngFor="let member of newTeamMembers">
+          {{ getMemberName(member) }}
+          <button type="button" (click)="removeMember(member.id)">✕</button>
+        </span>
+      </div>
+      <button class="action-button" type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="editModalOpen">
+  <div class="modal">
+    <button class="modal-close" (click)="closeEditModal()">✕</button>
+    <h3>Edit Team</h3>
+    <form [formGroup]="editForm" (ngSubmit)="saveTeamEdit()">
+      <div class="form-control">
+        <label>Team Name</label>
+        <input formControlName="name" placeholder="Team name" />
+      </div>
+      <div class="form-control">
+        <label>Description</label>
+        <textarea formControlName="description" placeholder="Team description"></textarea>
+      </div>
+      <div class="form-control">
+        <label>Members</label>
+        <select formControlName="memberId" (change)="handleEditMemberSelect($any($event.target).value)">
+          <option value="">Pick a teammate</option>
+          <option *ngFor="let user of users$ | async" [value]="user.id">
+            {{ user.profile.firstName }} {{ user.profile.lastName }}
+          </option>
+        </select>
+      </div>
+      <div class="chips">
+        <span class="chip" *ngFor="let member of editMembers">
+          {{ getMemberName(member) }}
+          <button type="button" (click)="removeEditMember(member.id)">✕</button>
+        </span>
+      </div>
+      <button class="action-button" type="submit">Save</button>
+    </form>
+  </div>
+</div>

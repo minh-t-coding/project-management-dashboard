@@ -1,0 +1,41 @@
+<section class="login-page">
+  <div class="login-hero">
+    <h1>Cook Systems</h1>
+    <p>a final app</p>
+  </div>
+
+  <div class="login-card card">
+    <div class="role-toggle">
+      <button type="button" [class.active]="role === 'admin'" (click)="setRole('admin')">Admin</button>
+      <button type="button" [class.active]="role === 'worker'" (click)="setRole('worker')">Worker</button>
+    </div>
+
+    <div class="logo-circle">
+      <img src="assets/logo.png" alt="Cook Systems logo" />
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-control">
+        <label>Username</label>
+        <input formControlName="identifier" type="text" placeholder="username" />
+        <small class="error" *ngIf="identifier?.invalid && identifier?.touched">
+          Username is required.
+        </small>
+      </div>
+
+      <div class="form-control">
+        <label>Password</label>
+        <input formControlName="password" type="password" placeholder="Minimum 8 characters" />
+        <small class="error" *ngIf="password?.hasError('minlength') && password?.touched">
+          Password must be at least 8 characters.
+        </small>
+      </div>
+
+      <button class="action-button" type="submit" [disabled]="loading">
+        {{ loading ? 'Signing In...' : 'Login' }}
+      </button>
+    </form>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+</section>

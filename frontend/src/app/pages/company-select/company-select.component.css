@@ -1,0 +1,25 @@
+.company-select {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-card {
+  width: min(460px, 100%);
+  text-align: center;
+  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.select-card h2 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.select-card select {
+  appearance: none;
+}

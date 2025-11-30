@@ -1,0 +1,19 @@
+<section class="company-select page">
+  <div class="card select-card">
+    <h2>Select Company</h2>
+    <p class="muted">Choose where you are currently placed to load personalized content.</p>
+
+    <div class="form-control">
+      <label>Pick an option</label>
+      <select [value]="selectedCompanyId ?? ''" (change)="selectCompany($any($event.target).value)">
+        <option value="" disabled>Select company</option>
+        <option *ngFor="let option of companyOptions" [value]="option.id">
+          {{ option.name }}
+        </option>
+      </select>
+    </div>
+
+    <button class="action-button" (click)="continue()">Continue</button>
+    <p class="error" *ngIf="notice">{{ notice }}</p>
+  </div>
+</section>

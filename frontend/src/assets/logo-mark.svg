@@ -1,0 +1,10 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip">
+      <rect width="64" height="64" rx="32" ry="32" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clip)">
+    <image href="logo.png" width="64" height="64" preserveAspectRatio="xMidYMid slice" />
+  </g>
+</svg>

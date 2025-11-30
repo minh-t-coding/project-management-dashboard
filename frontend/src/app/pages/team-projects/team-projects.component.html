@@ -1,0 +1,81 @@
+<section class="page team-projects-page">
+  <ng-container *ngIf="team$ | async as team">
+    <div class="projects-header">
+      <div class="header-left">
+        <button class="ghost-link back-link" (click)="goBack()">← Back to Teams</button>
+        <div>
+          <p class="muted">Projects for Team</p>
+          <h2>{{ team.name }}</h2>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="pill success" *ngIf="showIndicator">New project recently added</div>
+        <button class="action-button secondary" *ngIf="showIndicator" (click)="markIndicatorRead()">
+          Mark as seen
+        </button>
+        <button class="action-button" *ngIf="isAdmin$ | async" (click)="openCreate()">Add Project</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="projects-grid">
+    <article class="project-card" *ngFor="let project of projects$ | async">
+        <div class="project-info">
+          <div>
+            <h3>{{ project.name }}</h3>
+            <p class="muted">{{ project.description }}</p>
+          </div>
+          <span class="pill" [ngClass]="project.active ? 'success' : 'danger'">
+            {{ project.active ? 'Active' : 'Inactive' }}
+          </span>
+        </div>
+        <div class="card-actions" *ngIf="(isAdmin$ | async) || canEdit">
+          <button class="ghost-link" (click)="openEdit(project)">Edit</button>
+          <button class="ghost-link danger" (click)="deleteProject(project)">Delete</button>
+        </div>
+    </article>
+  </div>
+</section>
+
+<div class="modal-backdrop" *ngIf="showEditModal">
+  <div class="modal">
+    <button class="modal-close" (click)="showEditModal = false">✕</button>
+    <h3>Edit Project</h3>
+    <form [formGroup]="editForm" (ngSubmit)="saveEdit()">
+      <div class="form-control">
+        <label>Project Name</label>
+        <input formControlName="name" />
+      </div>
+      <div class="form-control">
+        <label>Description</label>
+        <textarea formControlName="description"></textarea>
+      </div>
+      <div class="form-control" *ngIf="authService.role === 'admin'">
+        <label>Active?</label>
+        <select formControlName="active">
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
+        </select>
+      </div>
+      <button class="action-button" type="submit">Save</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="showCreateModal">
+  <div class="modal">
+    <button class="modal-close" (click)="showCreateModal = false">✕</button>
+    <h3>Add Project</h3>
+    <form [formGroup]="createForm" (ngSubmit)="createProject()">
+      <div class="form-control">
+        <label>Project Name</label>
+        <input formControlName="name" />
+      </div>
+      <div class="form-control">
+        <label>Description</label>
+        <textarea formControlName="description"></textarea>
+      </div>
+      <button class="action-button" type="submit">Submit</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<section class="page home-page">
+  <div class="home-header">
+    <div>
+      <h2>Announcements</h2>
+      <p class="muted">Stay on top of what's happening at your company</p>
+    </div>
+    <div class="header-actions">
+      <div class="pill success" *ngIf="indicator$ | async">New since your last visit</div>
+      <button class="action-button secondary" *ngIf="indicator$ | async" (click)="markAnnouncementsRead()">
+        Mark as read
+      </button>
+      <button class="action-button" *ngIf="isAdmin$ | async" (click)="openModal()">Create announcement</button>
+    </div>
+  </div>
+
+  <div class="announcement-list">
+    <article class="announcement-card" *ngFor="let announcement of announcements$ | async">
+      <div class="announcement-meta">
+        <div>
+          <p class="author">{{ announcement.author.profile.firstName }}</p>
+          <span class="role">
+            {{ announcement.author.admin ? 'Executive Sponsor' : 'Team Member' }}
+          </span>
+        </div>
+        <div class="meta-actions">
+          <span class="date">{{ announcement.date | date: 'mediumDate' }}</span>
+          <ng-container *ngIf="isAdmin$ | async">
+            <button class="ghost-link" (click)="startEdit(announcement)">Edit</button>
+            <button class="ghost-link danger" (click)="deleteAnnouncement(announcement)">Delete</button>
+          </ng-container>
+        </div>
+      </div>
+      <h4>{{ announcement.title }}</h4>
+      <p>{{ announcement.message }}</p>
+    </article>
+  </div>
+</section>
+
+<div class="modal-backdrop" *ngIf="modalOpen">
+  <div class="modal">
+    <button class="modal-close" (click)="closeModal()">✕</button>
+    <h3>Create Announcement</h3>
+    <form [formGroup]="announcementForm" (ngSubmit)="submitAnnouncement()">
+      <div class="form-control">
+        <label>Title</label>
+        <input formControlName="title" placeholder="Announcement title" />
+      </div>
+      <div class="form-control">
+        <label>Message</label>
+        <textarea formControlName="message" placeholder="Share important updates for your teams"></textarea>
+      </div>
+      <button class="action-button" type="submit">Submit</button>
+    </form>
+    <p class="error" *ngIf="announcementForm.invalid && announcementForm.touched">
+      Make sure all required fields are filled out.
+    </p>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="editModalOpen">
+  <div class="modal">
+    <button class="modal-close" (click)="closeEditModal()">✕</button>
+    <h3>Edit Announcement</h3>
+    <form [formGroup]="editForm" (ngSubmit)="submitAnnouncementEdit()">
+      <div class="form-control">
+        <label>Title</label>
+        <input formControlName="title" placeholder="Announcement title" />
+      </div>
+      <div class="form-control">
+        <label>Message</label>
+        <textarea formControlName="message" placeholder="Announcement body"></textarea>
+      </div>
+      <button class="action-button" type="submit">Save</button>
+    </form>
+    <p class="error" *ngIf="editForm.invalid && editForm.touched">
+      Make sure all required fields are filled out.
+    </p>
+  </div>
+</div>

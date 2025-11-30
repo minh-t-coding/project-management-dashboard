@@ -1,0 +1,26 @@
+<nav class="nav-shell" [class.worker]="role === 'worker'">
+  <div class="nav-brand">
+    <img src="assets/logo.png" alt="Cook Systems logo" class="logo" />
+    <div class="brand-copy">
+      <p class="brand-title">{{ welcomeText }}</p>
+      <p class="brand-subtitle" *ngIf="statusText">{{ statusText }}</p>
+      <p class="brand-subtitle" *ngIf="selectedCompany">
+        {{ role === 'admin' ? 'Company' : 'Assigned Company' }}: {{ selectedCompany.name }}
+      </p>
+    </div>
+  </div>
+
+  <div class="nav-actions">
+    <button class="hamburger" *ngIf="isMobile" (click)="toggleMenu()" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="nav-links" [class.open]="!isMobile || menuOpen">
+      <button *ngFor="let link of links" (click)="navigate(link)">
+        {{ link.label }}
+      </button>
+    </div>
+  </div>
+</nav>

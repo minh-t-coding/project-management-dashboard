@@ -1,0 +1,10 @@
+<app-navbar
+  *ngIf="showNav$ | async"
+  [user]="user$ | async"
+  [role]="role$ | async"
+  [links]="(navLinks$ | async) ?? []"
+  [selectedCompany]="company$ | async"
+  (actionSelected)="handleAction($event)"
+></app-navbar>
+
+<router-outlet></router-outlet>

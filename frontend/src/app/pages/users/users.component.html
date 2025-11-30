@@ -1,0 +1,94 @@
+<section class="page users-page">
+  <div class="users-header">
+    <div>
+      <h2>Users Registry</h2>
+      <p class="muted">A general view of all your members in your organization</p>
+    </div>
+    <button class="action-button" (click)="openModal()">Add User</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Active</th>
+          <th>Admin</th>
+          <th>Status</th>
+          <th *ngIf="(authService.role$ | async) === 'admin'">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users$ | async">
+          <td>{{ formatName(user) }}</td>
+          <td>{{ user.profile.email }}</td>
+          <td>
+            <span class="pill" [ngClass]="user.active ? 'success' : 'danger'">{{ user.active ? 'Active' : 'Inactive' }}</span>
+          </td>
+          <td>
+            <span class="pill" [ngClass]="user.admin ? 'success' : 'danger'">{{ user.admin ? 'Yes' : 'No' }}</span>
+          </td>
+        <td>
+            <span class="pill" [ngClass]="user.status === 'JOINED' ? 'success' : 'danger'">{{ user.status }}</span>
+          </td>
+          <td *ngIf="(authService.role$ | async) === 'admin'">
+            <div class="action-stack">
+              <button class="ghost-link danger" *ngIf="user.active" (click)="deactivate(user)">Deactivate</button>
+              <button class="ghost-link" *ngIf="!user.active" (click)="reinstate(user)">Reinstate</button>
+              <button class="ghost-link danger outline" (click)="deletePermanent(user)">Delete Permanently</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="modal-backdrop" *ngIf="modalOpen">
+  <div class="modal">
+    <button class="modal-close" (click)="closeModal()">✕</button>
+    <h3>Add User</h3>
+    <form [formGroup]="userForm" (ngSubmit)="createUser()">
+      <div class="form-control">
+        <label>First Name</label>
+        <input formControlName="firstName" />
+      </div>
+      <div class="form-control">
+        <label>Username</label>
+        <input formControlName="username" />
+      </div>
+      <div class="form-control">
+        <label>Last Name</label>
+        <input formControlName="lastName" />
+      </div>
+      <div class="form-control">
+        <label>Email</label>
+        <input formControlName="email" type="email" />
+      </div>
+      <div class="form-control">
+        <label>Phone Number</label>
+        <input formControlName="phone" />
+      </div>
+      <div class="form-control">
+        <label>Password</label>
+        <input formControlName="password" type="password" />
+      </div>
+      <div class="form-control">
+        <label>Confirm Password</label>
+        <input formControlName="confirmPassword" type="password" />
+        <small class="error" *ngIf="userForm.get('confirmPassword')?.hasError('mismatch')">
+          Passwords must match.
+        </small>
+      </div>
+      <div class="form-control">
+        <label>Make user an admin role?</label>
+        <select formControlName="isAdmin">
+          <option value="false">False</option>
+          <option value="true">True</option>
+        </select>
+      </div>
+      <button class="action-button" type="submit">Submit</button>
+    </form>
+  </div>
+</div>

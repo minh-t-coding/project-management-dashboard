@@ -1,0 +1,53 @@
+<section class="page profile-page" *ngIf="authService.currentUser as user">
+  <div class="card profile-card">
+    <h2>Edit Profile</h2>
+    <p class="muted">Update your contact details or credentials.</p>
+
+    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <div class="form-grid">
+        <div class="form-control">
+          <label>First Name</label>
+          <input formControlName="firstName" />
+        </div>
+        <div class="form-control">
+          <label>Last Name</label>
+          <input formControlName="lastName" />
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-control">
+          <label>Email</label>
+          <input formControlName="email" type="email" />
+        </div>
+        <div class="form-control">
+          <label>Phone</label>
+          <input formControlName="phone" />
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-control">
+          <label>Username</label>
+          <input formControlName="username" />
+        </div>
+        <div class="form-control">
+          <label>Password</label>
+          <input type="password" formControlName="password" placeholder="Leave blank to keep current" />
+        </div>
+        <div class="form-control">
+          <label>Confirm Password</label>
+          <input type="password" formControlName="confirmPassword" placeholder="Repeat new password" />
+          <small class="error" *ngIf="profileForm.get('confirmPassword')?.hasError('mismatch')">
+            Passwords must match.
+          </small>
+        </div>
+      </div>
+
+      <button class="action-button" type="submit">Save Changes</button>
+    </form>
+
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+</section>
