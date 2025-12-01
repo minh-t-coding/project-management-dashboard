@@ -1,20 +1,123 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=21697291&assignment_repo_type=AssignmentRepo)
-Group Project 3
-===============================
-# Overview
+# Project Management Dashboard
 
-For this group project students will work to write a full stack web application. This will incorporate everything we learned in the classroom. Students will be given tasks across the full stack to ensure everyone works on all pieces of the application. The application will be managed in a simulated kan ban agile style and will make use of Github issues and the project board features. During the first day of the project students will go through the ERD and wireframe that the stakeholders had a account lead put together for you. From these each team will need to create their own endpoint documentation and add it to the wiki. Once that's done each team should meet with their lead and plan out the project by creating issues and assigning each member their first 2-3 tasks. The target for the week is to finish a minimum viable producte of their application with as many features complete as possible and functional prototype to present to the full FT team and others from Cook Systems internal staff. All teams will have a cut-off time of 12pm CT the last Thursday of class. At that point they should begin putting together their presentation and practice it with their lead a minimum of 2 times that afternoon. The final Friday all teams will present that applications.
+## Overview
+This project consists of a Spring Boot backend API and an Angular frontend that work together to provide a comprehensive company project management system. The application supports two user roles (Admin and Worker) and includes features for managing announcements, teams, projects, and users across multiple companies.
 
----
+Check GitHub Wiki tab for API documentation.
 
-## ERD
-
+### ERD
 ![Final ERD](https://user-images.githubusercontent.com/32781877/206259951-fe81a650-1d90-4c28-ae7a-571f649269d9.png)
 
+### Wireframe
+[Figma Wireframe Link](https://www.figma.com/file/huwXGJxW6BCIbk4p2QcZG2/Final-Prototype?type=design&node-id=0-1&mode=design&t=1Ef7iFB5zY6Kjdyb-0)
+
+## Screenshots
+
+### Login Page
+![Login Page](screenshots/0-login-page.PNG)
+*Authentication interface with role selection (Admin/Worker)*
+
+### Company Selection
+![Company Select](screenshots/1-company-select.PNG)
+*Select company for compancy specific information*
+
+### Announcements Dashboard
+![Announcements](screenshots/2-announcements.PNG)
+*View company-wide announcements with new content indicators and admin controls*
+
+### Teams Management
+![Teams](screenshots/3-teams.PNG)
+*Manage teams across company with team names, description, and members*
+
+### Projects View
+![Projects](screenshots/4-projects.PNG)
+*Track team projects with status indicators*
+
+### Users Registry
+![Users](screenshots/5-users.PNG)
+*Admin interface for managing all company users with role and status tracking*
+
+### Profile Management
+![Profile](screenshots/6-profile.PNG)
+*Update personal information, credentials, and contact details*
 
 ---
 
-## Wireframe
+## Getting Started
 
-[Figma Wireframe Link](https://www.figma.com/file/huwXGJxW6BCIbk4p2QcZG2/Final-Prototype?type=design&node-id=0-1&mode=design&t=1Ef7iFB5zY6Kjdyb-0)
+### Prerequisites
+- **Java 11 MIN, Java 17 MAX** 
+- **Node.js (14+)**
+- **PostgreSQL (12+)** 
+- **Maven (3.6+)** 
+- **Angular CLI 15+**
 
+### Local Setup
+
+1. **Clone the repository:**
+```bash
+git clone https://github.com/minh-t-coding/project-management-dashboard.git
+cd project-management-dashboard
+```
+
+2. **Update Database Credentials**
+
+In `backend/src/main/resources/application.properties`:
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=your_password_here
+```
+
+3. **Backend Setup**
+
+Navigate to the backend directory and run:
+```bash
+cd backend
+
+mvn clean install
+mvn spring-boot:run
+```
+
+The backend will start on `http://localhost:8080`
+
+4. **Frontend Setup**
+
+In a new terminal, navigate to the frontend directory:
+```bash
+cd frontend
+
+npm install
+ng serve
+```
+
+The frontend will start on `http://localhost:4200`
+
+### Pre-Seeded Users
+The back end should pre-seed the database with some users if you want to just check out the application flow.
+
+You can get started by navicating to `http://localhost:4200` and logging in with:
+```properties
+username: willsusername
+password: willspassword
+```
+
+## Features
+### Admin Features
+- **User Management**: Add, edit, and deactivate users
+- **Company Selection**: Switch between multiple companies
+- **Team Management**: Create, edit, and delete teams with member assignments
+- **Project Management**: Create, edit, and deactivate projects for teams
+- **Announcements**: Post and edit company-wide announcements
+- **Full CRUD Operations**: Complete control over all resources for company
+
+### Worker Features
+- **View Announcements**: See company announcements with new content indicators
+- **Team Access**: View teams they're assigned to
+- **Project Collaboration**: View and edit projects for their teams
+- **Profile Management**: Update personal profile and credentials
+
+## Contributors
+- **Minh Nguyen**
+- **Efrain Medina**
+- **Matthew Robinson**
